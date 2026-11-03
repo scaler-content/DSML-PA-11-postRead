@@ -1,0 +1,981 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applied Case Study 1 — Lecture 11</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-page:#F8FAFC;--bg-card:#FFFFFF;--bg-section:#F1F5F9;
+  --accent:#6366F1;--accent-dark:#4338CA;--accent-wash:#EEF2FF;
+  --blue:#0EA5E9;--green:#10B981;--amber:#F59E0B;--red:#EF4444;--purple:#8B5CF6;
+  --text-h:#0F172A;--text-b:#1E293B;--text-s:#64748B;--text-m:#94A3B8;
+  --border:#E2E8F0;--border-strong:#CBD5E1;
+  --r:8px;--rm:12px;--rl:16px;
+  --maxw:1440px;--pad:clamp(24px,4vw,72px);
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg-page:#0D1117;--bg-card:#161B27;--bg-section:#1A2235;
+  --text-h:#F1F5F9;--text-b:#CBD5E1;--text-s:#94A3B8;--text-m:#475569;
+  --border:#1E293B;--border-strong:#334155;
+}}
+:root[data-theme="dark"]{
+  --bg-page:#0D1117;--bg-card:#161B27;--bg-section:#1A2235;
+  --text-h:#F1F5F9;--text-b:#CBD5E1;--text-s:#94A3B8;--text-m:#475569;
+  --border:#1E293B;--border-strong:#334155;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 52px)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg-page);color:var(--text-b);line-height:1.65;font-size:16px}
+h1{font-size:clamp(2.1rem,3.8vw,2.9rem);font-weight:700;color:#fff;line-height:1.15}
+h2{font-size:clamp(1.4rem,2.2vw,1.75rem);font-weight:600;color:var(--text-h);line-height:1.3;margin-bottom:8px}
+h3{font-size:1.05rem;font-weight:600;color:var(--text-h);margin-bottom:6px}
+p{color:var(--text-b);line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+.sec{padding:64px 0}
+.sec-alt{background:var(--bg-section)}
+.measure{max-width:720px}
+/* HERO */
+.hero{background:var(--accent);padding:68px var(--pad) 80px;text-align:center}
+.hero-inner{max-width:var(--maxw);margin:0 auto}
+.hero-chip{display:inline-block;background:rgba(255,255,255,.18);color:#C7D2FE;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:18px}
+.hero-sub{font-size:clamp(1rem,1.4vw,1.18rem);color:#C7D2FE;max-width:680px;margin:18px auto 30px}
+.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+.hero-badge{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28);padding:8px 18px;border-radius:20px;font-size:14px;font-weight:500}
+.hstats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hstat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--rm);padding:14px 22px;min-width:150px}
+.hstat .n{font-size:1.5rem;font-weight:700;color:#fff;line-height:1.2}
+.hstat .l{font-size:11.5px;color:#C7D2FE;text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+/* NAV */
+.snav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg-card);border-bottom:1px solid var(--border);z-index:100;overflow-x:auto;white-space:nowrap;padding:0 var(--pad)}
+.snav-inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:center;flex-wrap:nowrap}
+.snav a{padding:15px 13px;font-size:13.5px;font-weight:500;color:var(--text-s);display:inline-block;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.snav a:hover{color:var(--accent)}
+.snav a.on{color:var(--accent);border-bottom-color:var(--accent)}
+/* CARDS */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:24px}
+.callout{background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;margin:16px 0}
+.callout p,.callout div{font-size:14.5px;color:var(--accent-dark)}
+.witty{background:var(--bg-section);border-left:3px solid var(--amber);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;font-size:14.5px;color:var(--text-s);font-style:italic;margin:20px 0}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.alertbox{background:#FEF2F2;border:1px solid #FECACA;border-left:4px solid var(--red);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;margin:16px 0}
+.alertbox p,.alertbox div{color:#991B1B;font-size:14.5px}
+.goodbox{background:#ECFDF5;border:1px solid #A7F3D0;border-left:4px solid var(--green);border-radius:0 var(--r) var(--r) 0;padding:16px 20px;margin:16px 0}
+.goodbox p,.goodbox div{color:#065F46;font-size:14.5px}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.mod2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.g3,.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.g2,.g3,.g4,.mod2{grid-template-columns:1fr}.sec{padding:44px 0}.hero{padding:46px 20px 54px}}
+/* TAGS */
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.t-blue{background:#E0F2FE;color:#0369A1}.t-green{background:#D1FAE5;color:#065F46}
+.t-amber{background:#FEF3C7;color:#92400E}.t-red{background:#FEE2E2;color:#991B1B}
+.t-purple{background:#EDE9FE;color:#5B21B6}.t-indigo{background:var(--accent-wash);color:var(--accent-dark)}
+/* BUTTONS */
+.rev-btn{width:100%;text-align:left;background:var(--bg-section);border:1px solid var(--border);border-radius:var(--r);padding:11px 16px;cursor:pointer;color:var(--accent);font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;transition:background .15s;font-family:inherit}
+.rev-btn:hover{background:var(--accent-wash)}
+.rev-body{display:none;margin-top:12px}.rev-body.on{display:block}
+.subh{font-size:1.02rem;font-weight:600;color:var(--text-h);margin:22px 0 10px}
+.rev-open{margin-top:6px}
+/* CHECKPOINT */
+.cp{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:26px;margin-bottom:24px}
+.cp-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+.cp-num{width:42px;height:42px;border-radius:11px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cp-meta{flex:1;min-width:200px}
+.cp-step{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-s)}
+.cp-title{font-size:1.12rem;font-weight:700;color:var(--text-h);line-height:1.3}
+.fmt{display:inline-block;background:var(--bg-section);border:1px solid var(--border);color:var(--text-s);font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+/* QUIZ */
+.quiz{background:var(--bg-section);border:1px solid var(--border);border-radius:var(--rm);padding:20px;margin-top:16px}
+.quiz .qq{font-size:15px;font-weight:600;color:var(--text-h);margin-bottom:14px}
+.qopts{display:flex;flex-direction:column;gap:9px}
+.qopt{text-align:left;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 16px;cursor:pointer;font-size:14px;color:var(--text-b);font-family:inherit;transition:all .15s;display:flex;gap:10px;align-items:flex-start}
+.qopt:hover{border-color:var(--accent)}
+.qopt .qk{font-weight:700;color:var(--text-s);flex-shrink:0}
+.qopt.correct{background:#D1FAE5;border-color:var(--green);color:#065F46}
+.qopt.correct .qk{color:var(--green)}
+.qopt.wrong{background:#FEE2E2;border-color:var(--red);color:#991B1B}
+.qopt.wrong .qk{color:var(--red)}
+.qexp{display:none;margin-top:14px;background:var(--accent-wash);border-left:4px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;font-size:14px;color:var(--accent-dark)}
+.qexp.on{display:block}.qexp b{color:var(--text-h)}
+.qhint{margin-top:12px;font-size:13.5px;color:var(--text-s);font-style:italic;display:flex;gap:8px}
+.whywrong{margin-top:12px;padding-top:12px;border-top:1px solid var(--border-strong)}
+.whywrong .wt{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-s);margin-bottom:7px}
+.whywrong li{font-size:13.5px;color:var(--text-b);margin-bottom:5px;list-style:none;display:flex;gap:8px}
+.whywrong li span{color:var(--red);font-weight:700;flex-shrink:0}
+/* TABLE */
+.vtable{width:100%;border-collapse:collapse;font-size:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);overflow:hidden}
+.vtable th,.vtable td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+.vtable thead th{background:var(--bg-section);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-s)}
+.vtable tr:last-child td{border-bottom:none}
+.vtable tr.hl td{background:#FEF2F2;font-weight:600}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .vtable tr.hl td{background:#2A1A1F}}
+.num{font-variant-numeric:tabular-nums}
+.down{color:var(--red);font-weight:700}
+.flat{color:var(--text-s);font-weight:600}
+.up{color:var(--green);font-weight:700}
+/* FIGURE */
+.fig{max-width:900px;margin:22px 0;border:1px solid var(--border);border-radius:var(--rm);overflow:hidden;background:var(--bg-card)}
+.fig img{display:block;width:100%;height:auto;background:var(--bg-section)}
+.fig figcaption{font-size:12.5px;color:var(--text-s);padding:10px 16px;border-top:1px solid var(--border);background:var(--bg-section)}
+/* FRAMEWORK STRIP */
+.fw{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.fwc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:18px;border-top:3px solid var(--accent)}
+.fwc .k{width:32px;height:32px;border-radius:8px;background:var(--accent-wash);color:var(--accent-dark);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.fwc h4{font-size:14.5px;font-weight:700;color:var(--text-h);margin-bottom:4px}
+.fwc p{font-size:13px;color:var(--text-s)}
+/* TIMELINE */
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.tlc{border:1px solid var(--border);border-radius:var(--rm);padding:18px;background:var(--bg-card)}
+.tlc .d{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-s);margin-bottom:8px}
+.tlc .v{font-size:1.45rem;font-weight:700;line-height:1.15}
+.tlc .n{font-size:13px;color:var(--text-s);margin-top:6px}
+/* CHAIN */
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0}
+.chain .lk{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:13.5px;color:var(--text-b);font-weight:500}
+.chain .lk.root{border-color:var(--red);background:#FEF2F2;color:#991B1B;font-weight:700}
+.chain .lk.end{border-color:var(--amber);background:#FFFBEB;color:#92400E;font-weight:700}
+.chain .ar{color:var(--text-m);font-weight:700;font-size:15px}
+/* WHY LADDER */
+.ladder{display:flex;flex-direction:column;gap:0}
+.lrow{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.lrow:last-child{border-bottom:none}
+.lq{font-size:14px;font-weight:600;color:var(--text-h);flex:0 0 42%}
+.la{font-size:14px;color:var(--text-s);flex:1}
+@media(max-width:700px){.lrow{flex-direction:column;gap:4px}.lq{flex:1}}
+/* POCKET */
+.pocket{background:#0F172A;border-radius:var(--rl);padding:34px}
+.pocket h3{color:#C7D2FE;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.prow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.pi{background:rgba(255,255,255,.1);border-radius:6px;padding:7px 13px;font-size:13.5px;color:#E2E8F0}
+.pi span{color:#818CF8;font-weight:700}
+/* TAKEAWAY */
+.tw{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
+.tw:last-child{border-bottom:none}
+.twn{width:30px;height:30px;background:var(--accent);color:#fff;border-radius:50%;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hyp{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:20px}
+.hyp h4{font-size:14px;font-weight:700;margin-bottom:10px}
+.hyp li{font-size:13.5px;color:var(--text-b);margin-bottom:6px;list-style:none;display:flex;gap:8px}
+.hyp li span{flex-shrink:0;font-weight:700}
+.struck{text-decoration:line-through;color:var(--text-m)}
+/* L11 EXTRAS */
+.tree{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.trow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tbar{height:44px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;padding:0 14px;font-weight:700;font-size:14px;white-space:nowrap;min-width:max-content}
+.tlab{font-size:13.5px;color:var(--text-s);flex:1;min-width:200px}
+.tmul{font-size:12px;font-weight:700;color:var(--accent-dark);background:var(--accent-wash);border-radius:20px;padding:3px 10px}
+.stage{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rm);padding:18px;border-top:3px solid var(--accent)}
+.stage .sk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.stage p{font-size:13.5px;color:var(--text-b)}
+.stage.na{border-top-color:var(--border-strong);opacity:.8}.stage.na .sk{color:var(--text-m)}
+.tier{border-radius:var(--rm);padding:16px 20px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.tier .tk{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;min-width:150px}
+.tier .tv{font-size:14px;flex:1;min-width:220px}
+.stack{display:flex;height:40px;border-radius:8px;overflow:hidden;font-size:12.5px;font-weight:700;color:#fff}
+.stack div{display:flex;align-items:center;justify-content:center}
+.pass{color:var(--green);font-weight:700}.fail{color:var(--red);font-weight:700}
+.rfm{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.rfm:last-child{border-bottom:none}
+.rfm .rn{flex:0 0 200px;font-weight:600;color:var(--text-h);font-size:14px}
+.rfm .rtrack{flex:1;min-width:120px;max-width:420px}
+.rfm .rb{height:22px;border-radius:5px;background:var(--accent);min-width:6px}
+@media(max-width:640px){.rfm .rn{flex-basis:100%}}
+.rfm .rv{font-size:13px;color:var(--text-s);font-variant-numeric:tabular-nums}
+.rfm .rd{font-size:13px;color:var(--text-s);flex-basis:100%}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-chip">Lecture 11 · Applied Case Study 1</div>
+    <h1>Amazon Now in the Festive Sale</h1>
+    <p class="hero-sub">Amazon has put 10–15 minute delivery inside its biggest sale of the year. Leadership asks one question: how will we know this is a success? You're the Product Analyst who answers it.</p>
+    <div class="badges">
+      <span class="hero-badge">Metric Definition</span>
+      <span class="hero-badge">AAAERR + Guardrails</span>
+      <span class="hero-badge">Guesstimate</span>
+      <span class="hero-badge">A/B Test</span>
+      <span class="hero-badge">RFM</span>
+      <span class="hero-badge">11 Checkpoints</span>
+    </div>
+    <div class="hstats">
+      <div class="hstat"><div class="n">~3 lakh / day</div><div class="l">Estimated quick orders</div></div>
+      <div class="hstat"><div class="n">+50%</div><div class="l">The lift that wasn't</div></div>
+      <div class="hstat"><div class="n">+4.0%</div><div class="l">Real lift, A/B test</div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <a href="#problem">The Problem</a>
+    <a href="#framework">Framework</a>
+    <a href="#objective">Objective</a>
+    <a href="#prize">Size the Prize</a>
+    <a href="#clarify">Clarify</a>
+    <a href="#goals">Business Goals</a>
+    <a href="#aaaerr">AAAERR</a>
+    <a href="#ai">AI Moment</a>
+    <a href="#hierarchy">Hierarchy</a>
+    <a href="#trap">50% Trap</a>
+    <a href="#abtest">Test &amp; Launch</a>
+    <a href="#retention">Retention</a>
+    <a href="#summary">Summary</a>
+    <a href="#wrapup">Wrap-Up</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- PROBLEM -->
+<section class="sec" id="problem">
+  <div class="wrap">
+    <div class="lbl">Setting the scene</div>
+    <h2>Quick Delivery, Inside the Biggest Sale of the Year</h2>
+    <p class="measure" style="margin-bottom:24px">This case introduces no new concepts — every question is solved with something from the module. Amazon's Great Indian Festival 2026 started on <strong>October 8th</strong>, a day before Flipkart's Big Billion Days (October 9th). This year Amazon brought <strong>Amazon Now</strong>, its 10–15 minute delivery service, directly inside the main festival sale: shoppers can pick quick delivery right at search, without switching to Blinkit, Zepto or Swiggy Instamart.</p>
+
+    <div class="g2" style="gap:24px;align-items:stretch;margin-bottom:24px">
+      <div class="card">
+        <div class="tag t-indigo" style="margin-bottom:12px">Your role</div>
+        <h3 style="font-size:1.05rem;margin-bottom:10px">Product Analyst, Amazon India</h3>
+        <p style="font-size:14.5px;margin-bottom:12px">For the Great Indian Festival, Amazon has added Amazon Now (10–15 minute delivery) inside the main app. Shoppers can choose quick delivery right at search.</p>
+        <div class="chips" style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag t-blue">🔍 Search</span><span class="tag t-blue">⚡ Choose quick delivery</span><span class="tag t-blue">🛵 10–15 min</span>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:16px;border-top:3px solid var(--accent)">
+        <div style="font-size:38px">🧑‍💼</div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em">Leadership asks</div>
+        <p style="font-size:17px;color:var(--text-h);font-weight:600;line-height:1.5">"How will we know this is a success? What metrics would you track?"</p>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--amber);margin-bottom:24px">
+      <div class="tag t-amber" style="margin-bottom:10px">Common first instincts</div>
+      <h3 style="font-size:1.05rem;margin-bottom:10px">Where most first answers start</h3>
+      <p style="font-size:14.5px;margin-bottom:12px">Asked this in a meeting or an interview, most people start in one of three places: jumping straight to a number ("number of orders"), asking what the goal is, or thinking about cost and user experience.</p>
+      <p style="font-size:14.5px;margin:0">All three belong in a strong answer — but the <strong>order</strong> matters. The rest of this case shows that order, one step at a time.</p>
+    </div>
+
+    <div class="quiz" style="margin-top:0">
+      <div class="qq">Before answering, name the question type. Is this a metric <em>change</em> question or a metric <em>definition</em> question?</div>
+      <div class="qopts">
+        <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>Metric change — a number moved, and we need to find out why</button>
+        <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>Metric definition — we need to decide what to measure to judge success</button>
+      </div>
+      <div class="qexp"><b>Answer: B — a metric definition question.</b> Nothing has moved yet; leadership wants to know <em>what</em> to measure. So we use the 4-step framework from Product Strategy and Product Metrics I: <strong>Clarify → Business Goals → Define Metrics → Summarize</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section class="sec sec-alt" id="framework">
+  <div class="wrap">
+    <div class="lbl">The framework</div>
+    <h2>The Metric Definition Framework</h2>
+    <p class="measure" style="margin-bottom:24px">Four steps that structure the whole case. Every checkpoint below maps to one of them — or borrows a tool from another lecture in the module.</p>
+
+    <div class="fw" style="margin-bottom:24px">
+      <div class="fwc"><div class="k">1</div><h4>Clarify</h4><p>The objective behind the release, what the feature is, what problem it solves, and who benefits.</p></div>
+      <div class="fwc"><div class="k">2</div><h4>Business Goals</h4><p>The goal for each stakeholder — success is measured against these.</p></div>
+      <div class="fwc"><div class="k">3</div><h4>Define Metrics</h4><p>Walk the <strong>AAAERR</strong> stages, add <strong>guardrails</strong>, then label <strong>North Star, L1, L2</strong>.</p></div>
+      <div class="fwc" style="border-top-color:var(--green)"><div class="k" style="background:#D1FAE5;color:#065F46">4</div><h4>Summarize</h4><p>Recap from objective to metrics, plus your recommendation.</p></div>
+    </div>
+
+    <h3 style="margin-bottom:12px">Tools borrowed from the rest of the module</h3>
+    <div class="g3" style="gap:14px;margin-bottom:16px">
+      <div class="hyp"><h4 style="color:var(--accent-dark)">Product Strategy</h4><p style="font-size:13.5px;color:var(--text-s)">Why is Amazon doing this at all?</p></div>
+      <div class="hyp"><h4 style="color:var(--accent-dark)">Guesstimates</h4><p style="font-size:13.5px;color:var(--text-s)">How big is the prize?</p></div>
+      <div class="hyp"><h4 style="color:var(--accent-dark)">Product Metrics I &amp; II</h4><p style="font-size:13.5px;color:var(--text-s)">Vanity vs actionable; new vs shifted value.</p></div>
+      <div class="hyp"><h4 style="color:var(--accent-dark)">TROPiCS</h4><p style="font-size:13.5px;color:var(--text-s)">The C — cannibalization — becomes a guardrail.</p></div>
+      <div class="hyp"><h4 style="color:var(--accent-dark)">A/B Testing</h4><p style="font-size:13.5px;color:var(--text-s)">Prove it works, then decide where to launch.</p></div>
+      <div class="hyp"><h4 style="color:var(--accent-dark)">CRM &amp; Segmentation</h4><p style="font-size:13.5px;color:var(--text-s)">RFM decides who to retain first.</p></div>
+    </div>
+    <div class="callout"><p>All numbers in this case study are <strong>illustrative</strong>, created for practice — they are not Amazon's real figures. The reasoning is what transfers to an interview.</p></div>
+  </div>
+</section>
+
+<!-- CP1 OBJECTIVE -->
+<section class="sec" id="objective">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 1</div>
+    <h2>Why Is Amazon Doing This?</h2>
+    <p class="measure" style="margin-bottom:24px">Clarify starts with the main objective behind the release. A metric without a strategy behind it is just a number.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">1</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Clarify — the objective (Product Strategy)</div><div class="cp-title">Find the strategy behind the feature</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">Why would Amazon put 10–15 minute delivery inside its biggest sale of the year?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'A')"><span class="qk">A</span>To compete with quick-commerce apps for urgent, fast-turnaround purchases</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'A')"><span class="qk">B</span>To clear festival inventory faster by moving stock out of local centres</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'A')"><span class="qk">C</span>To increase app downloads by giving new users a reason to install</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'A')"><span class="qk">D</span>To reduce delivery costs by shipping from centres closer to customers</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>Where do users go today when they need something in 10–15 minutes? Who is Amazon losing those orders to?</span></div>
+        <div class="qexp">
+          <b>Answer: A — compete with quick-commerce apps for urgent purchases.</b>
+          <p style="margin-top:8px">Quick-commerce apps are pulling urgent and impulse orders away from traditional e-commerce. With quick delivery inside the main app, the shopper doesn't need to switch apps when they need something fast. It's a <strong>defensive and a growth move</strong> at the same time.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>B</span>Inventory clearance is driven by discounts, not delivery speed — and quick delivery only covers items stocked in local centres.</li>
+              <li><span>C</span>Downloads are a vanity outcome (Product Metrics I). Most festival shoppers already have the Amazon app.</li>
+              <li><span>D</span>10–15 minute delivery needs local centres and dedicated riders, so cost per order usually goes <strong>up</strong>, not down.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">🎯 Keep this objective in mind. Every metric picked in the rest of the case must connect back to it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CP2 PRIZE -->
+<section class="sec sec-alt" id="prize">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 2</div>
+    <h2>How Big Is the Prize?</h2>
+    <p class="measure" style="margin-bottom:24px">Before leadership cares about metrics, they ask a simpler question: is this even worth it? Nobody will hand you the number. Estimate it the guesstimate way: Clarify → Analyze → Breakdown → Calculate → Validate.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">2</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Guesstimate</div><div class="cp-title">How many quick-delivery orders on a festival day?</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">What is the <strong>best starting point</strong> to break down daily Amazon Now orders during the sale?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'D')"><span class="qk">A</span>India's total population, narrowed down by urban share and age group</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'D')"><span class="qk">B</span>The number of orders Blinkit gets per day, scaled to Amazon's market share</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'D')"><span class="qk">C</span>The number of smartphones in India with the Amazon app installed</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'D')"><span class="qk">D</span>Amazon's daily active shoppers in cities where Amazon Now is live</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>Start from the group of people who can actually use the feature. Who can order with 10–15 minute delivery today?</span></div>
+        <div class="qexp">
+          <b>Answer: D — daily active shoppers in Amazon Now cities.</b>
+          <p style="margin-top:8px">Only shoppers in serviceable cities can use the feature, so starting there keeps every later assumption grounded. It's the same narrowing-funnel pattern as the iPhone guesstimate (population → eligible → can afford → market share), just from a tighter base.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>The whole population adds several shaky layers before you even reach Amazon shoppers.</li>
+              <li><span>B</span>A competitor's numbers describe a different user base and business.</li>
+              <li><span>C</span>App installs aren't linked to festival shopping in Amazon Now cities.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:24px 0 4px">Breakdown &amp; Calculate — the estimation tree</h3>
+      <p style="font-size:13.5px;color:var(--text-s)">All values are illustrative assumptions.</p>
+      <div class="tree">
+        <div class="trow"><div class="tbar" style="width:100%;max-width:560px">1 crore</div><div class="tlab">Daily active shoppers in Amazon Now cities during the sale</div></div>
+        <div class="trow"><div class="tbar" style="width:60%;max-width:420px;background:#4F46E5">20 lakh</div><span class="tmul">× 20%</span><div class="tlab">have an urgent or impulse item in their basket</div></div>
+        <div class="trow"><div class="tbar" style="width:42%;max-width:300px;background:#4338CA">10 lakh</div><span class="tmul">× 50%</span><div class="tlab">whose item is in stock at a local centre</div></div>
+        <div class="trow"><div class="tbar" style="width:28%;max-width:200px;background:var(--green)">3 lakh</div><span class="tmul">× 30%</span><div class="tlab"><strong>choose quick delivery → ~3 lakh quick-delivery orders per day</strong></div></div>
+      </div>
+
+      <div class="card" style="margin-top:8px">
+        <div class="tag t-indigo" style="margin-bottom:8px">Validate</div>
+        <p style="font-size:14.5px;margin-bottom:12px">The last step is <strong>Validate</strong>: does the number make sense? One way to check it independently:</p>
+        
+        <div class="rev-open">
+          <div class="goodbox" style="margin:0"><p>Check it from the <strong>supply side</strong>: if Amazon runs about <strong>800 local centres</strong>, each handling about <strong>400 orders a day</strong> at festival peak, they can deliver about <strong>3.2 lakh orders a day</strong>. The demand estimate (~3 lakh) lands close to that, so it makes sense. Like the AdSense sanity check in Guesstimates II, you compare the answer with a number you can reason about independently.</p></div>
+        </div>
+      </div>
+      <div class="alertbox" style="margin-bottom:0"><p><strong>Hold that thought:</strong> of these 3 lakh orders, are all of them new for Amazon? Many would have been ordered anyway with standard delivery. That question decides the business goal in Checkpoint 4.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CP3 CLARIFY -->
+<section class="sec" id="clarify">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 3</div>
+    <h2>Clarify the Feature</h2>
+    <p class="measure" style="margin-bottom:24px">Interviewers notice when a candidate jumps straight to metrics without making sure everyone means the same thing. In the Facebook 'Save' case, we clarified what the feature does and <strong>who benefits</strong>. Same here.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">3</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Clarify — what, problem, who benefits</div><div class="cp-title">One line: what problem does it solve, and for whom?</div></div>
+      </div>
+      <p style="font-size:14.5px;margin-bottom:12px">State it in one line: what problem it solves and who benefits.</p>
+      <div class="qhint" style="margin-bottom:16px"><span>💡</span><span>Template: "It helps <strong>[who]</strong> to <strong>[do what]</strong>, so that <strong>[problem solved]</strong>." Then ask: who else besides shoppers gains from it?</span></div>
+      <div class="g2" style="margin-bottom:16px">
+        <div class="hyp" style="border-top:3px solid var(--red)"><h4 style="color:var(--red)">Too vague</h4><p style="font-size:13.5px;color:var(--text-s)">"Fast delivery for everyone." — No user, no problem, no reason it matters.</p></div>
+        <div class="hyp" style="border-top:3px solid var(--amber)"><h4 style="color:#92400E">Incomplete</h4><p style="font-size:13.5px;color:var(--text-s)">Names only the shopper — and misses the seller and the business.</p></div>
+      </div>
+      <h3 class="subh">The ideal answer</h3>
+
+      <div class="rev-open">
+        <div class="callout" style="margin-top:0"><p>"It helps <strong>festival shoppers who need items urgently</strong> get them in 10–15 minutes inside the main Amazon app, so they <strong>don't switch to another quick-commerce app</strong>."</p></div>
+        <div class="g3" style="gap:14px">
+          <div class="hyp"><h4 style="color:var(--accent-dark)">🛍️ Shoppers</h4><p style="font-size:13.5px;color:var(--text-s)">Get urgent items fast without leaving Amazon.</p></div>
+          <div class="hyp"><h4 style="color:var(--accent-dark)">🏪 Sellers</h4><p style="font-size:13.5px;color:var(--text-s)">Sell more of their fast-moving items during the sale.</p></div>
+          <div class="hyp"><h4 style="color:var(--accent-dark)">🏢 Amazon</h4><p style="font-size:13.5px;color:var(--text-s)">Keeps urgent orders that would otherwise go to a competitor.</p></div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">🔑 Notice the word <strong>"urgently"</strong>. Urgent orders are the ones Amazon would otherwise lose to a quick-commerce app — and they shape the business goal next.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CP4 GOALS -->
+<section class="sec sec-alt" id="goals">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 4</div>
+    <h2>Set the Business Goals</h2>
+    <p class="measure" style="margin-bottom:24px">Step 2 states the goal for each stakeholder, because success is measured against these goals. Shopper and seller goals are easy. The business goal is where most candidates make their first mistake.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">4</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Business Goals</div><div class="cp-title">Two of these options look very similar</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">What should be Amazon's <strong>business goal</strong> for adding Amazon Now inside the festival sale?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'C')"><span class="qk">A</span>Maximise the number of quick-delivery orders placed during the sale</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'C')"><span class="qk">B</span>Maximise app traffic and sessions during the sale window</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'C')"><span class="qk">C</span>Increase orders per active user with orders that are genuinely new, not just switched from standard delivery</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'C')"><span class="qk">D</span>Expand quick delivery to as many new cities as possible during the sale</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>If a user would have bought the same item anyway with standard delivery, did Amazon actually gain anything from that quick-delivery order?</span></div>
+        <div class="qexp">
+          <b>Answer: C — genuinely new orders per active user.</b>
+          <p style="margin-top:8px">Remember the Indian Bank case in Product Metrics II: before calling app revenue a success, we separated <strong>genuinely new</strong> revenue from revenue that merely <strong>shifted</strong> channels. Same here. If a user switches an order from standard to quick delivery, the quick-delivery count goes up, but Amazon hasn't won anything new — and has probably paid more to deliver it. The genuinely new orders are called <strong>incremental orders</strong>.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>Counts orders that would have happened anyway. The most common trap — Checkpoint 8 comes back to it.</li>
+              <li><span>B</span>Traffic is an awareness signal, not an outcome. A sale drives traffic on its own.</li>
+              <li><span>D</span>City expansion is an operational input. It helps reach, but doesn't show whether the feature creates value.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:24px 0 12px">Business goals for each stakeholder</h3>
+      <div class="g3" style="gap:14px">
+        <div class="hyp"><h4 style="color:var(--accent-dark)">Shopper goal</h4><p style="font-size:13.5px;color:var(--text-s)">Get urgent items in 10–15 minutes without switching apps.</p></div>
+        <div class="hyp"><h4 style="color:var(--accent-dark)">Seller goal</h4><p style="font-size:13.5px;color:var(--text-s)">Sell more fast-moving items during the sale.</p></div>
+        <div class="hyp" style="border:2px solid var(--accent)"><h4 style="color:var(--accent-dark)">Business goal</h4><p style="font-size:13.5px;color:var(--text-b)"><strong>Increase incremental orders per active user, delivered at a sustainable cost.</strong></p></div>
+      </div>
+      <div class="witty" style="margin-bottom:0">💰 The words <strong>"sustainable cost"</strong> matter. We'll need guardrail metrics that protect them.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CP5 AAAERR -->
+<section class="sec" id="aaaerr">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 5</div>
+    <h2>Define Metrics: Walk Through AAAERR</h2>
+    <p class="measure" style="margin-bottom:24px">Just like the Facebook 'Save' case, walk the user through each stage and define the metric that shows success there. Not every stage applies to every feature.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">5</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Define Metrics — AAAERR</div><div class="cp-title">Pick a stage, name a metric</div></div>
+      </div>
+      <p style="font-size:14.5px;margin-bottom:12px">Define one metric for each stage, following the shopper through the journey.</p>
+      <div class="qhint" style="margin-bottom:16px"><span>💡</span><span>Follow the shopper: they search, see the quick-delivery option, choose it, receive the order, and maybe come back. Which stage is each of those moments?</span></div>
+      <h3 class="subh">AAAERR for Amazon Now</h3>
+
+      <div class="rev-open">
+        <div class="g3" style="gap:14px">
+          <div class="stage"><div class="sk">Awareness</div><p>% of shoppers who saw the quick-delivery option at least once during the sale</p></div>
+          <div class="stage na"><div class="sk">Acquisition</div><p>Mostly <strong>not applicable</strong> — festival shoppers are already Amazon customers. At most: new customers whose first Amazon order was a quick-delivery order.</p></div>
+          <div class="stage"><div class="sk">Activation</div><p>Quick-delivery selection rate = shoppers who chose quick delivery ÷ shoppers shown the option</p></div>
+          <div class="stage"><div class="sk">Engagement</div><p>% of quick-delivery orders delivered within the 10–15 minute promise; quick-delivery orders per active user</p></div>
+          <div class="stage"><div class="sk">Revenue</div><p>Incremental orders per active user; average order value (AOV) of quick-delivery orders</p></div>
+          <div class="stage"><div class="sk">Retention</div><p>30-day repeat quick-delivery rate — shoppers who order with quick delivery again within 30 days</p></div>
+        </div>
+        <div class="callout" style="margin-bottom:0"><p>Each stage answers a different question: did shoppers notice it, try it, did it work for them, did it make money, did they come back? A drop at any stage tells you exactly <strong>where the feature is leaking</strong>.</p></div>
+      </div>
+      <div class="witty" style="margin-bottom:0">👀 The stage most people skip is <strong>Awareness</strong> — the same one AI often leaves thin, as we saw in Lecture 1. And during a festival rush, the stage most likely to break is Engagement: items not in stock locally, or late deliveries.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CP6 AI -->
+<section class="sec sec-alt" id="ai">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 6 · AI moment</div>
+    <h2>Judge the AI's Metric List</h2>
+    <p class="measure" style="margin-bottom:24px">In Lecture 1, we asked AI to define success metrics for 'Save for Later' using AAAERR and then checked its work. Same here: AI gives a fast first draft; the analyst's job is to <strong>judge</strong> it.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">6</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Define Metrics — success &amp; guardrail metrics</div><div class="cp-title">AI drafts, the analyst decides</div></div>
+      </div>
+
+      <div class="card" style="border-top:3px solid var(--purple);margin-bottom:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">🤖 The prompt</div>
+        <div style="background:var(--bg-section);border-radius:var(--r);padding:16px;font-size:14px;font-style:italic">"Act as a product analyst. Amazon India has added Amazon Now (10–15 minute delivery) inside its main app during the Great Indian Festival sale. List 8 metrics that would define success, structured using AAAERR: Awareness, Acquisition, Activation, Engagement, Revenue, Retention."</div>
+        <p style="font-size:13px;color:var(--text-s);margin-top:10px">AI output changes each time you run it, so here is a fixed version of the draft list to judge.</p>
+      </div>
+
+      <table class="vtable" style="margin-bottom:8px">
+        <thead><tr><th>#</th><th>The AI's draft metric</th><th>Stage</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1</td><td>Amazon Now banner impressions</td><td>Awareness</td></tr>
+          <tr><td class="num">2</td><td>App downloads during the sale</td><td>Acquisition</td></tr>
+          <tr><td class="num">3</td><td>Quick-delivery selection rate</td><td>Activation</td></tr>
+          <tr><td class="num">4</td><td>Quick-delivery orders per active user</td><td>Engagement</td></tr>
+          <tr><td class="num">5</td><td>% of orders delivered within the 10–15 minute promise</td><td>Engagement</td></tr>
+          <tr><td class="num">6</td><td>Average order value (AOV) of quick-delivery orders</td><td>Revenue</td></tr>
+          <tr><td class="num">7</td><td>30-day repeat quick-delivery rate</td><td>Retention</td></tr>
+          <tr><td class="num">8</td><td>Quick-delivery selection rate by city</td><td>Activation</td></tr>
+        </tbody>
+      </table>
+
+      <div class="quiz">
+        <div class="qq">Which of these metrics is a <strong>vanity metric</strong>?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>Quick-delivery orders per active user</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>Amazon Now banner impressions</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'B')"><span class="qk">C</span>% of orders delivered within the 10–15 minute promise</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'B')"><span class="qk">D</span>30-day repeat quick-delivery rate</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>From Product Metrics I: a vanity metric looks good on a dashboard but doesn't help you make a decision. Which number can go up even if nobody orders anything?</span></div>
+        <div class="qexp">
+          <b>Answer: B — banner impressions.</b>
+          <p style="margin-top:8px">Impressions rise just because the sale drives traffic. They say nothing about whether shoppers chose quick delivery or whether Amazon gained an order. App downloads (#2) are vanity for the same reason. For Awareness, use the actionable version from Checkpoint 5: <strong>% of shoppers who saw the option</strong>.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>Actionable — as long as it's read alongside total orders per active user (see Checkpoint 8).</li>
+              <li><span>C</span>Actionable — tells operations exactly where the promise is breaking.</li>
+              <li><span>D</span>Actionable — tells us whether the feature is becoming a habit.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="tag t-indigo" style="margin-bottom:8px">What's missing?</div>
+        <p style="font-size:14.5px;margin-bottom:10px">Every metric on the AI's list measures success. What kind of metric is <strong>missing</strong>?</p>
+        <div class="qhint" style="margin-bottom:14px"><span>💡</span><span>Go back to the business goal: incremental orders, at a sustainable cost. What must <em>not</em> get worse because of this feature?</span></div>
+        
+        <div class="rev-open">
+          <div class="g3" style="gap:14px">
+            <div class="hyp" style="border-top:3px solid var(--amber)"><h4 style="color:#92400E">🛡️ Delivery cost per order</h4><p style="font-size:13.5px;color:var(--text-s)">Quick delivery is expensive — growth that loses money isn't success.</p></div>
+            <div class="hyp" style="border-top:3px solid var(--amber)"><h4 style="color:#92400E">🛡️ Cancellation &amp; refund rate</h4><p style="font-size:13.5px;color:var(--text-s)">Items shown as available but out of stock at the local centre.</p></div>
+            <div class="hyp" style="border-top:3px solid var(--amber)"><h4 style="color:#92400E">🛡️ Total orders per active user</h4><p style="font-size:13.5px;color:var(--text-s)">Cannibalization check — are quick-delivery orders new, or just moved from standard delivery?</p></div>
+          </div>
+          <div class="callout" style="margin-bottom:0"><p>These are <strong>guardrail metrics</strong>. In Product Strategy, a feature could win on its own scoreboard while quietly hurting the product around it — like Reels pulling time away from the main feed. Guardrails catch that. The AI's list has none.</p></div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">🤖 The AI produced a decent, well-structured first draft in seconds — but included two vanity metrics and missed every guardrail. <strong>AI drafts, the analyst decides.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- CP7 HIERARCHY -->
+<section class="sec" id="hierarchy">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 7</div>
+    <h2>Label the Metrics, Pick the One to Act On</h2>
+    <p class="measure" style="margin-bottom:24px">Once the metrics are listed, Product Metrics I says to label them: one <strong>North Star</strong>, then <strong>Primary (L1)</strong> and <strong>Supporting (L2)</strong>.</p>
+
+    <div style="margin-bottom:24px">
+      <div class="tier" style="background:var(--accent);color:#fff"><div class="tk">⭐ North Star</div><div class="tv">Incremental orders per active user</div></div>
+      <div class="tier" style="background:var(--accent-wash);color:var(--accent-dark)"><div class="tk">Primary (L1)</div><div class="tv">Quick-delivery selection rate · 30-day repeat quick-delivery rate</div></div>
+      <div class="tier" style="background:var(--bg-section);color:var(--text-b);border:1px solid var(--border)"><div class="tk" style="color:var(--text-s)">Supporting (L2)</div><div class="tv">% delivered within the promise · quick-delivery orders per active user · AOV of quick-delivery orders · selection rate by city</div></div>
+      <div class="tier" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A"><div class="tk">🛡️ Guardrails</div><div class="tv">Delivery cost per order · cancellation &amp; refund rate · total orders per active user</div></div>
+      <div class="tier" style="background:var(--bg-card);color:var(--text-m);border:1px dashed var(--border-strong)"><div class="tk">🗑️ Vanity (drop)</div><div class="tv"><span class="struck">Banner impressions</span> · <span class="struck">App downloads</span></div></div>
+    </div>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">7</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Define Metrics — North Star, L1, L2</div><div class="cp-title">The sale lasts ~10 days. One metric goes on the daily war-room dashboard.</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">Which metric should go on the <strong>daily</strong> war-room dashboard during the sale?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'D')"><span class="qk">A</span>App downloads during the sale, tracked by city</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'D')"><span class="qk">B</span>30-day repeat quick-delivery rate</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'D')"><span class="qk">C</span>Incremental orders per active user (the North Star)</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'D')"><span class="qk">D</span>Quick-delivery selection rate</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>Product Metrics I said an L1 metric can be more useful than the North Star in the short term. Why? Think about how quickly each metric gives you feedback.</span></div>
+        <div class="qexp">
+          <b>Answer: D — quick-delivery selection rate.</b>
+          <p style="margin-top:8px">An L1 metric has a <strong>narrower focus and a tighter feedback loop</strong> than the North Star. Selection rate updates every day from existing data, and the team can act on it the same day — fix stock, visibility or placement. The North Star says whether we're winning overall, but it can only be read properly from an experiment (Checkpoint 9).</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>A vanity metric, as Checkpoint 6 showed.</li>
+              <li><span>B</span>A good L1, but it takes 30 days to measure — longer than the sale. Great for the post-sale review, not a daily decision.</li>
+              <li><span>C</span>The right measure of overall success, but incremental orders need a comparison group without the feature, so there's no same-day feedback.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">⚠️ Selection rate is for <strong>acting</strong> every day, not for <strong>judging</strong> success. It can rise while the business gains nothing — which is why it always sits next to a guardrail.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CP8 TRAP -->
+<section class="sec sec-alt" id="trap">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 8</div>
+    <h2>The 50% Trap</h2>
+    <p class="measure" style="margin-bottom:24px">Time to test the metrics against a real situation. The first week of the sale has passed, and your manager walks up with a dashboard and a big smile.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">8</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Define Metrics — guardrails (cannibalization)</div><div class="cp-title">"Quick-delivery orders are up 50%!"</div></div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--green);margin-bottom:16px;display:flex;gap:16px;align-items:center">
+        <div style="font-size:34px">🧑‍💼</div>
+        <p style="font-size:16px;color:var(--text-h);font-weight:600">"In the first week of the sale, quick-delivery orders are up 50% against our pre-sale forecast! Can we call this a success?"</p>
+      </div>
+      <div class="quiz">
+        <div class="qq">What's your answer to the manager?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'A')"><span class="qk">A</span>Can't say yet; first check whether total orders per active user also rose</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'A')"><span class="qk">B</span>Yes; a 50% jump in the very first week is a clear success signal</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'A')"><span class="qk">C</span>No; quick delivery costs more, so these extra orders must be losing money</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'A')"><span class="qk">D</span>Mostly yes, but first check that the rise held on every day, not just Day 1</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>Remember the business goal from Checkpoint 4. Does a 50% rise in quick-delivery orders tell you anything about genuinely new orders?</span></div>
+        <div class="qexp">
+          <b>Answer: A — check total orders per active user first.</b>
+          <p style="margin-top:8px">The full dashboard (below) shows the 1 lakh extra quick-delivery orders are exactly the 1 lakh orders standard delivery lost. Total orders haven't moved — shoppers simply <strong>switched</strong> delivery options. This is <strong>cannibalization</strong>, the C in TROPiCS. And because quick delivery costs more per order, Amazon may be earning less on the same orders.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>B</span>Celebrates a metric that only measures movement between delivery options, not new value. This is why we check before we celebrate.</li>
+              <li><span>C</span>Cost may be a concern, but you can't conclude it without cost data. The bigger issue is that total orders are flat.</li>
+              <li><span>D</span>A steady rise can still be pure switching. Day-by-day consistency says nothing about whether total orders grew.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="subh">The full dashboard</h3>
+
+      <div class="rev-open">
+        <p style="font-size:13.5px;color:var(--text-s);margin-bottom:10px">Daily average in the first sale week vs the pre-sale forecast for the same week (illustrative).</p>
+        <div style="overflow-x:auto;margin-bottom:18px"><table class="vtable">
+          <thead><tr><th>Orders per day</th><th>Forecast</th><th>Actual</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>Quick delivery</td><td class="num">2.0 lakh</td><td class="num">3.0 lakh</td><td class="up">▲ 50%</td></tr>
+            <tr><td>Standard delivery</td><td class="num">10.0 lakh</td><td class="num">9.0 lakh</td><td class="down">▼ 10%</td></tr>
+            <tr class="hl"><td>Total orders</td><td class="num">12.0 lakh</td><td class="num">12.0 lakh</td><td class="flat">— flat</td></tr>
+          </tbody>
+        </table></div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Forecast · 12.0 lakh</div>
+        <div class="stack" style="margin-bottom:12px"><div style="width:16.7%;background:var(--accent)">2.0</div><div style="width:83.3%;background:#94A3B8">Standard 10.0</div></div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Actual · 12.0 lakh</div>
+        <div class="stack"><div style="width:25%;background:var(--accent)">Quick 3.0</div><div style="width:75%;background:#94A3B8">Standard 9.0</div></div>
+        <p style="font-size:13px;color:var(--text-s);margin-top:8px">Same total bar, different colours inside it. The slice moved; the pie didn't grow.</p>
+      </div>
+      <div class="alertbox" style="margin-bottom:0"><p>This is why <strong>total orders per active user</strong> was added as a guardrail in Checkpoint 6. Without it, this dashboard would have gone to leadership as a success story.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CP9-10 AB TEST -->
+<section class="sec" id="abtest">
+  <div class="wrap">
+    <div class="lbl">Checkpoints 9 &amp; 10</div>
+    <h2>Prove It Works, Then Decide Where to Launch</h2>
+    <p class="measure" style="margin-bottom:24px">Comparing raw numbers didn't work. Leadership now asks: "Fine — how do we prove whether Amazon Now creates genuinely new orders?" This is where A/B testing comes in.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">9</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · A/B Testing</div><div class="cp-title">How do we prove it works?</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">What's the best way to prove Amazon Now drives incremental orders?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'B')"><span class="qk">A</span>Compare total orders in festival week vs the week before the sale started</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'B')"><span class="qk">B</span>Randomly split eligible shoppers into a treatment group (sees quick delivery) and a control group (doesn't), and compare orders per active user</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'B')"><span class="qk">C</span>Compare orders per active user for shoppers who used quick delivery vs those who didn't</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'B')"><span class="qk">D</span>Compare this year's festival with last year's festival, adjusted for user growth</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>For each option, ask: is there anything other than Amazon Now that could explain the difference between the two groups?</span></div>
+        <div class="qexp">
+          <b>Answer: B — a randomized treatment vs control split.</b>
+          <p style="margin-top:8px">Random assignment makes the two groups alike in every way except the feature, so any real difference in orders per active user can be credited to Amazon Now. That difference <em>is</em> the North Star: incremental orders per active user.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>Festival week always beats a normal week. <strong>Seasonality</strong> (the External Data step of CRIED) drives the difference, not the feature.</li>
+              <li><span>C</span><strong>Sample bias.</strong> Shoppers who choose quick delivery are already urgent, high-intent shoppers — they'd order more anyway.</li>
+              <li><span>D</span>Too much changed in a year: prices, competitors, city coverage, user base.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="subh">Designing the experiment</h3>
+
+      <div class="rev-open">
+        <div class="g2" style="gap:14px">
+          <div class="hyp"><h4 style="color:var(--accent-dark)">Hypotheses</h4><p style="font-size:13.5px;color:var(--text-s)"><strong>H₀:</strong> Amazon Now makes no difference to orders per active user.<br><strong>H₁:</strong> it changes orders per active user.</p></div>
+          <div class="hyp"><h4 style="color:var(--accent-dark)">Sample size</h4><p style="font-size:13.5px;color:var(--text-s)">Set from the baseline, the minimum detectable effect leadership cares about (<strong>3% lift</strong>), a <strong>5%</strong> significance level and <strong>80%</strong> power. A tool does the calculation.</p></div>
+          <div class="hyp"><h4 style="color:var(--accent-dark)">Duration</h4><p style="font-size:13.5px;color:var(--text-s)">Sample size ÷ eligible shoppers per day — and run through the full sale <strong>plus 2–3 weeks after</strong>, so a <strong>novelty effect</strong> doesn't inflate the result.</p></div>
+          <div class="hyp"><h4 style="color:var(--accent-dark)">Metrics</h4><p style="font-size:13.5px;color:var(--text-s)"><strong>Success:</strong> orders per active user. <strong>Guardrails:</strong> delivery cost per order, cancellation rate.</p></div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">🧪 Why can't we just compare shoppers who used quick delivery with those who didn't? <strong>Sample bias</strong> — they chose it because they were already more likely to buy.</div>
+    </div>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">10</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · A/B Testing &amp; Launch Recommendations</div><div class="cp-title">Read the results: launch or not?</div></div>
+      </div>
+      <div class="callout" style="margin-top:0"><p><strong>Decision rule agreed with leadership:</strong> scale Amazon Now in the main app if orders per active user rise by <strong>at least 3%</strong> and the lift is <strong>statistically significant (p &lt; 0.05)</strong>, delivery cost per order stays <strong>within budget</strong>, and cancellation rate doesn't rise by <strong>more than 1 percentage point</strong>.</p></div>
+
+      <div style="overflow-x:auto">
+      <table class="vtable" style="margin-bottom:6px">
+        <thead><tr><th>City type</th><th>Orders / active user</th><th>Significant?</th><th>Cancellation</th><th>Delivery cost</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Metro</strong></td><td class="up">+3.8%</td><td>p &lt; 0.01</td><td>+0.3 pp</td><td>Within budget</td></tr>
+          <tr><td><strong>Tier-2</strong></td><td class="up">+4.6%</td><td>p = 0.02</td><td>+0.7 pp</td><td class="down">25% over budget</td></tr>
+          <tr><td>Overall</td><td class="up">+4.0%</td><td>p &lt; 0.01</td><td>+0.4 pp</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-s)">Treatment vs control, illustrative. Check each row against every condition of the decision rule.</p>
+
+      <div class="quiz">
+        <div class="qq">What is your launch recommendation?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'D')"><span class="qk">A</span>Ship everywhere; orders per active user beat the 3% target overall</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'D')"><span class="qk">B</span>Don't ship; delivery costs went over budget in the test</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'D')"><span class="qk">C</span>Run the test for another six months to be sure the result holds</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'D')"><span class="qk">D</span>Ship in metro cities, and fix tier-2 costs before scaling there</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>The A/B Testing lecture asked what to do when results conflict: the success metric goes up, but a guardrail goes the wrong way. Check every condition of the decision rule, city type by city type.</span></div>
+        <div class="qexp">
+          <b>Answer: D — ship in metro, fix tier-2 costs first.</b>
+          <p style="margin-top:8px"><strong>Metro</strong> passes every condition: +3.8% (significant, above 3%), cost within budget, cancellations +0.3 pp. <strong>Tier-2</strong> passes on orders and cancellations but <strong>fails the cost guardrail</strong>. That's the conflicting-results case from the lecture: ship where everything passes, hold where a guardrail fails, and improve tier-2 costs (for example, by batching deliveries).</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>Ignores a guardrail breach. Guardrails exist to stop good-looking launches that lose money.</li>
+              <li><span>B</span>Throws away a proven, significant gain in metro cities.</li>
+              <li><span>C</span>Results are already significant in both city types. Six more months delays value without adding much.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="goodbox" style="margin-bottom:0"><p><strong>Link it to business impact:</strong> on about 12 lakh orders a day, a 4% lift is roughly <strong>48,000 extra orders a day</strong>. That's the number leadership will remember. And remember: a launch recommendation is rarely just yes or no — the strongest answers say <strong>where to ship, where to hold, and what must change first</strong>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CP11 RETENTION -->
+<section class="sec sec-alt" id="retention">
+  <div class="wrap">
+    <div class="lbl">Checkpoint 11</div>
+    <h2>Keep the Best Quick-Delivery Shoppers Coming Back</h2>
+    <p class="measure" style="margin-bottom:24px">The sale is over, and Amazon Now stays in the app in metro cities. Retention is the last stage of AAAERR. The team has run <strong>RFM segmentation</strong> on quick-delivery shoppers — exactly as in CRM Analytics and Customer Segmentation — and has a limited budget for retention offers.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">11</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Retention (CRM Analytics &amp; Customer Segmentation — RFM)</div><div class="cp-title">Who gets the retention budget first?</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-s);margin-bottom:6px">Quick-delivery shoppers by RFM segment, 30 days after the sale (illustrative).</p>
+      <div class="card" style="margin-bottom:8px">
+        <div class="rfm"><div class="rn">Champions</div><div class="rtrack"><div class="rb" style="width:30%"></div></div><div class="rv">1.2 lakh</div><div class="rd">Ordered recently and very often, high spend</div></div>
+        <div class="rfm"><div class="rn">Loyal customers</div><div class="rtrack"><div class="rb" style="width:50%"></div></div><div class="rv">2.0 lakh</div><div class="rd">Order often, last order a short while ago</div></div>
+        <div class="rfm"><div class="rn">Can't lose them</div><div class="rtrack"><div class="rb" style="width:15%;background:var(--red)"></div></div><div class="rv">0.6 lakh</div><div class="rd">Used to order very often with high spend, but haven't ordered for a long time</div></div>
+        <div class="rfm"><div class="rn">Price Sensitive / New</div><div class="rtrack"><div class="rb" style="width:100%"></div></div><div class="rv">4.0 lakh</div><div class="rd">Ordered once, recently</div></div>
+        <div class="rfm"><div class="rn">About to sleep</div><div class="rtrack"><div class="rb" style="width:75%"></div></div><div class="rv">3.0 lakh</div><div class="rd">Ordered rarely, and not recently</div></div>
+      </div>
+      <div class="quiz">
+        <div class="qq">Which segment needs a <strong>retention action first</strong>?</div>
+        <div class="qopts">
+          <button class="qopt" data-k="A" onclick="pickQ(this,'C')"><span class="qk">A</span>Champions, because they are the most valuable shoppers</button>
+          <button class="qopt" data-k="B" onclick="pickQ(this,'C')"><span class="qk">B</span>Price Sensitive / New customers, because it's the largest group</button>
+          <button class="qopt" data-k="C" onclick="pickQ(this,'C')"><span class="qk">C</span>Can't lose them, because they are high-value shoppers going quiet</button>
+          <button class="qopt" data-k="D" onclick="pickQ(this,'C')"><span class="qk">D</span>About to sleep, because they need the biggest push to come back</button>
+        </div>
+        <div class="qhint"><span>💡</span><span>Retention is about stopping valuable customers from leaving. Which segment is both high-value and at risk of churning right now?</span></div>
+        <div class="qexp">
+          <b>Answer: C — Can't lose them.</b>
+          <p style="margin-top:8px">From CRM Analytics: "Can't lose them" used to shop very often and spend a lot, but haven't shopped for a long time. They're high-value and at real risk of churning, so they get a <strong>personal win-back offer first</strong>. In the lecture's budget story, the bulk of the spend went to Champions and "Can't lose them" — Champions are still ordering and need a lighter touch; "Can't lose them" need action now. The smallest segment on the chart is the most urgent one.</p>
+          <div class="whywrong">
+            <div class="wt">Why the others fail</div>
+            <ul>
+              <li><span>A</span>Valuable but already active. They need recognition, not urgent retention spend.</li>
+              <li><span>B</span>Large, but low value so far. A moderate nudge toward a second order — not the first share of the budget.</li>
+              <li><span>D</span>Low value and low frequency. The lecture uses cheap, automated win-back messages for this group.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="witty" style="margin-bottom:0">🔁 Retention isn't one campaign for everyone. RFM tells you <strong>who to spend on first</strong>; the 30-day repeat rate (our L1) tells you <strong>whether it worked</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="sec" id="summary">
+  <div class="wrap">
+    <div class="lbl">Step 4 · Summarize</div>
+    <h2>The Final Answer</h2>
+    <p class="measure" style="margin-bottom:24px">Summarize means recapping the key points, from the objective to the metrics you'd track, plus your recommendation. This is how you close the answer in an interview.</p>
+
+    <div class="cp">
+      <div class="cp-head">
+        <div class="cp-num">✓</div>
+        <div class="cp-meta"><div class="cp-step">Framework step · Summarize</div><div class="cp-title">The complete answer</div></div>
+      </div>
+      <p style="font-size:14.5px;margin-bottom:14px">Here's how the complete answer sounds. The North Star comes from the business goal in Checkpoint 4; the guardrails protect its "sustainable cost" part.</p>
+      
+      <div class="rev-open">
+        <table class="vtable">
+          <tbody>
+            <tr><td style="width:190px">Objective</td><td>Keep urgent orders on Amazon instead of losing them to quick-commerce apps.</td></tr>
+            <tr><td>Business goal</td><td>Increase incremental orders per active user, at a sustainable cost.</td></tr>
+            <tr><td>⭐ North Star</td><td>Incremental orders per active user (treatment vs control).</td></tr>
+            <tr><td>L1</td><td>Quick-delivery selection rate (daily), 30-day repeat quick-delivery rate.</td></tr>
+            <tr><td>L2</td><td>% delivered within the promise, quick-delivery orders per active user, AOV, selection rate by city.</td></tr>
+            <tr><td>🛡️ Guardrails</td><td>Delivery cost per order, cancellation &amp; refund rate, total orders per active user.</td></tr>
+            <tr><td>Recommendation</td><td>Ship in metro cities, fix tier-2 costs before scaling, and target "Can't lose them" shoppers first to protect repeat usage.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout" style="margin-bottom:0"><p><strong>Check yourself:</strong> is your North Star about <em>genuinely new</em> orders? Is your guardrail about <em>cost</em> or <em>customer experience</em>?</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WRAP-UP -->
+<section class="sec sec-alt" id="wrapup">
+  <div class="wrap">
+    <div class="lbl">Wrap-up</div>
+    <h2>From First Instinct to a Structured Answer</h2>
+
+    <div class="card" style="border-top:3px solid var(--accent);margin-bottom:28px">
+      <p style="font-size:15px;margin-bottom:14px">A first instinct often jumps straight to a single number. The stronger approach is: clarify the objective and who benefits, set the business goals, walk through AAAERR with guardrails, label the North Star, and summarize with a recommendation. And "maximise quick-delivery orders" — the most tempting goal in Checkpoint 4 — is exactly the metric Checkpoint 8 showed would have fooled us.</p>
+      <div class="chain" style="margin-bottom:0">
+        <div class="lk">Clarify</div><div class="ar">→</div>
+        <div class="lk">Business Goals</div><div class="ar">→</div>
+        <div class="lk">AAAERR + Guardrails</div><div class="ar">→</div>
+        <div class="lk">North Star · L1 · L2</div><div class="ar">→</div>
+        <div class="lk end">Summarize + Recommend</div>
+      </div>
+      <p style="font-size:14px;color:var(--text-s);margin-top:10px">No new concept was needed — every step used something from the module: Product Strategy, Product Metrics, Guesstimates, CRIED and TROPiCS, A/B Testing, and RFM.</p>
+    </div>
+
+    <h2 style="margin-bottom:20px">Key Takeaways</h2>
+    <div class="card" style="max-width:1000px;margin-bottom:28px">
+      <div class="tw"><div class="twn">1</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Identify the question type first</div><p style="font-size:14px;color:var(--text-s)">A metric definition question uses Clarify → Business Goals → Define Metrics → Summarize.</p></div></div>
+      <div class="tw"><div class="twn">2</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Start from the objective, then size the prize</div><p style="font-size:14px;color:var(--text-s)">Every metric must connect to why the business built the feature. A quick guesstimate, validated against an independent number, tells leadership whether it's worth the effort.</p></div></div>
+      <div class="tw"><div class="twn">3</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Separate new value from shifted value</div><p style="font-size:14px;color:var(--text-s)">Watch for cannibalization whenever a new option competes with an existing one.</p></div></div>
+      <div class="tw"><div class="twn">4</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Always add guardrails</div><p style="font-size:14px;color:var(--text-s)">Growth that loses money or breaks the customer promise is not success.</p></div></div>
+      <div class="tw"><div class="twn">5</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Label your metrics</div><p style="font-size:14px;color:var(--text-s)">One North Star; L1 metrics for fast, daily action; L2 metrics for detail; drop the vanity ones.</p></div></div>
+      <div class="tw"><div class="twn">6</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">AI drafts, the analyst decides</div><p style="font-size:14px;color:var(--text-s)">Use AI for speed, then remove vanity metrics and add the guardrails it misses.</p></div></div>
+      <div class="tw"><div class="twn">7</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Prove impact with an A/B test, and ship where every guardrail passes</div><p style="font-size:14px;color:var(--text-s)">Random assignment beats every before/after or user-vs-non-user comparison.</p></div></div>
+      <div class="tw"><div class="twn">8</div><div><div style="font-weight:600;color:var(--text-h);margin-bottom:4px">Use RFM to decide who to retain first</div><p style="font-size:14px;color:var(--text-s)">High-value shoppers going quiet come before the biggest or the most active groups.</p></div></div>
+    </div>
+
+    <h2 style="margin-bottom:20px">Analyst's Pocket Card</h2>
+    <div class="pocket">
+      <div class="g2" style="gap:36px">
+        <div>
+          <h3>Metric definition framework</h3>
+          <div class="prow">
+            <div class="pi"><span>1</span> Clarify</div>
+            <div class="pi"><span>2</span> Business Goals</div>
+            <div class="pi"><span>3</span> Define Metrics</div>
+            <div class="pi"><span>4</span> Summarize</div>
+          </div>
+          <h3>AAAERR</h3>
+          <div class="prow">
+            <div class="pi"><span>A</span> Awareness</div>
+            <div class="pi"><span>A</span> Acquisition</div>
+            <div class="pi"><span>A</span> Activation</div>
+            <div class="pi"><span>E</span> Engagement</div>
+            <div class="pi"><span>R</span> Revenue</div>
+            <div class="pi"><span>R</span> Retention</div>
+          </div>
+          <h3>Label every metric</h3>
+          <div class="prow">
+            <div class="pi"><span>★</span> North Star</div>
+            <div class="pi"><span>L1</span> act daily</div>
+            <div class="pi"><span>L2</span> detail</div>
+            <div class="pi"><span>🛡</span> guardrails</div>
+            <div class="pi"><span>✕</span> drop vanity</div>
+          </div>
+        </div>
+        <div>
+          <h3>Traps to avoid</h3>
+          <div class="prow">
+            <div class="pi"><span>!</span> Counting switched orders as new</div>
+            <div class="pi"><span>!</span> No guardrails</div>
+            <div class="pi"><span>!</span> Before/after during a festival (seasonality)</div>
+            <div class="pi"><span>!</span> Users vs non-users (sample bias)</div>
+          </div>
+          <h3>Launch call</h3>
+          <div class="prow">
+            <div class="pi"><span>✓</span> Ship where every condition passes</div>
+            <div class="pi"><span>⏸</span> Hold where a guardrail fails</div>
+            <div class="pi"><span>🔧</span> Say what must change first</div>
+          </div>
+          <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:14px;font-size:13.5px;color:#C7D2FE;margin-top:4px">A feature can win its own scoreboard while the business gains nothing — <strong style="color:#fff">always read the success metric next to total orders</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;text-align:center;padding:36px;background:var(--accent-wash);border-radius:var(--rm)">
+      <div style="font-size:13px;color:var(--text-s);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Up next · Lecture 12</div>
+      <div style="font-size:24px;font-weight:700;color:var(--text-h);margin-bottom:4px">Applied Case Study 2</div>
+      <div style="font-size:14.5px;color:var(--text-s);max-width:640px;margin:0 auto">We stay with Amazon's festive sale — but this time something goes wrong on Day 3, and it's your job to find out what.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer style="background:#0F172A;padding:28px 20px;text-align:center">
+  <div style="font-size:13px;color:#475569">Scaler — Product Analytics Module &nbsp;·&nbsp; Lecture 11 of 12</div>
+</footer>
+
+<script>
+function pickQ(btn,correct){
+  var box=btn.closest('.quiz');
+  if(box.dataset.done)return;box.dataset.done='1';
+  box.querySelectorAll('.qopt').forEach(function(o){o.disabled=true;});
+  if(btn.getAttribute('data-k')===correct){btn.classList.add('correct');}
+  else{btn.classList.add('wrong');var c=box.querySelector('.qopt[data-k="'+correct+'"]');if(c)c.classList.add('correct');}
+  box.querySelector('.qexp').classList.add('on');
+}
+var secs=[].slice.call(document.querySelectorAll('section[id]'));
+var nav=[].slice.call(document.querySelectorAll('.snav a'));
+window.addEventListener('scroll',function(){
+  var cur='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-80)cur=s.id;});
+  nav.forEach(function(n){n.classList.remove('on');if(n.getAttribute('href')==='#'+cur)n.classList.add('on');});
+});
+</script>
+</body>
+</html>
+
+</body></html>
